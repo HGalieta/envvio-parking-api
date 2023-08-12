@@ -1,4 +1,5 @@
-﻿using Envvio.Parking.Api.Models;
+﻿using Envvio.Parking.Api.Data;
+using Envvio.Parking.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Envvio.Parking.Api.Controllers
