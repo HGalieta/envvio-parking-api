@@ -1,6 +1,5 @@
 ﻿using Envvio.Parking.Api.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.AccessControl;
 
 namespace Envvio.Parking.Api.Controllers
 {
@@ -70,7 +69,7 @@ namespace Envvio.Parking.Api.Controllers
                 registeredParkingLot.City = alteredParkingLot.City;
                 registeredParkingLot.Country = alteredParkingLot.Country;
                 _context.SaveChanges();
-                return Ok(registeredVehicle);
+                return Ok(registeredParkingLot);
             }
 
             return NotFound();
