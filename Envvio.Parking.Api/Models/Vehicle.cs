@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace Envvio.Parking.Api.Models
 {
@@ -15,10 +16,13 @@ namespace Envvio.Parking.Api.Models
             if (Regex.IsMatch(plate, "[A-Z]{2}[0-9]{3}[A-Z]{2}"))
                 Country = "Argentina";
         }
-
+        [Required]
         public string Plate { get; set; }
+        [Required]
         public string Country { get; set; }
+        [Required]
         public VehicleType Type { get; set; }
+        [Required]
         public ParkingLot ParkingLot { get; set; }
     }
 }
