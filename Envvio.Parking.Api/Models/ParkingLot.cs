@@ -1,23 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Envvio.Parking.Api.Models
 {
     public class ParkingLot
     {
-        public ParkingLot(string country, string state, string city)
-        {
-            Country = country;
-            State = state;
-            City = city;
-        }
-
+        [JsonIgnore]
         public List<Vehicle> Vehicles { get; set; }
         [Required]
-        public string Country { get; set; }
+        public int Id { get; set; }
         [Required]
-        public string State { get; set; }
-        [Required]
-        public string City { get; set; }
+        public string Name { get; set; }
     }
 
 }

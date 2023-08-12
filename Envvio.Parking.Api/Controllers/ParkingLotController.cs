@@ -1,4 +1,5 @@
-﻿using Envvio.Parking.Api.Models;
+﻿using Envvio.Parking.Api.Data;
+using Envvio.Parking.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Envvio.Parking.Api.Controllers
@@ -46,11 +47,11 @@ namespace Envvio.Parking.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteParkingLot(int id)
         {
-            ParkingLot parkingLot = _context.ParkingLot.FirstOrDefault(p => p.Id == id);
+            ParkingLot parkingLot = _context.ParkingLots.FirstOrDefault(p => p.Id == id);
 
             if (parkingLot != null)
             {
-                _context.Vehicles.Remove(parkingLot);
+                _context.ParkingLots.Remove(parkingLot);
                 _context.SaveChanges();
                 return Ok(parkingLot);
             }
@@ -59,15 +60,13 @@ namespace Envvio.Parking.Api.Controllers
         }
 
         [HttpPatch("{id}")]
-        public IActionResult PatchVehicle(int id, ParkingLot alteredParkingLot)
+        public IActionResult PatchParkingLots(int id, ParkingLot alteredParkingLot)
         {
-            ParkingLot registeredParkingLot = _context.Vehicle.FirstOrDefault(p => p.Id == id);
+            ParkingLot registeredParkingLot = _context.ParkingLots.FirstOrDefault(p => p.Id == id);
 
             if (registeredParkingLot != null)
             {
-                registeredParkingLot.State = alteredParkingLot.State;
-                registeredParkingLot.City = alteredParkingLot.City;
-                registeredParkingLot.Country = alteredParkingLot.Country;
+                registeredParkingLot.Name = alteredParkingLot.Name;
                 _context.SaveChanges();
                 return Ok(registeredParkingLot);
             }

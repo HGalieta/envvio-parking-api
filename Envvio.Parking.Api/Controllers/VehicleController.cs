@@ -70,14 +70,12 @@ namespace Envvio.Parking.Api.Controllers
         [HttpPatch("{id}")]
         public IActionResult PatchVehicle(int id, Vehicle alteredVehicle)
         {
-            Vehicle registeredVehicle = _context.Vehicle.FirstOrDefault(v => v.Id == id);
+            Vehicle registeredVehicle = _context.Vehicles.FirstOrDefault(v => v.Id == id);
 
             if (registeredVehicle != null)
             {
                 registeredVehicle.ParkingLot = alteredVehicle.ParkingLot;
                 registeredVehicle.Plate = alteredVehicle.Plate;
-                registeredVehicle.Type = alteredVehicle.Type;
-                registeredVehicle.Country = alteredVehicle.Country;
                 _context.SaveChanges();
                 return Ok(registeredVehicle);
             }
