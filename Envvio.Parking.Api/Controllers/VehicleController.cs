@@ -10,6 +10,11 @@ namespace Envvio.Parking.Api.Controllers
     {
         private readonly DataContext _context;
 
+        public VehicleController(DataContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet]
         public IActionResult GetVehicles()
         {
@@ -39,13 +44,6 @@ namespace Envvio.Parking.Api.Controllers
         [HttpPost]
         public IActionResult PostVehicle(Vehicle vehicle)
         {
-            List<ParkingLot> parkingLots = _context.ParkingLots.ToList();
-
-            if (!parkingLots.Contains(vehicle.ParkingLot))
-            {
-                throw new ApplicationException("Estacionamento inexistente.");
-            }
-
             _context.Vehicles.Add(vehicle);
             _context.SaveChanges();
             return Ok();
@@ -74,7 +72,6 @@ namespace Envvio.Parking.Api.Controllers
 
             if (registeredVehicle != null)
             {
-                registeredVehicle.ParkingLot = alteredVehicle.ParkingLot;
                 registeredVehicle.Plate = alteredVehicle.Plate;
                 _context.SaveChanges();
                 return Ok(registeredVehicle);

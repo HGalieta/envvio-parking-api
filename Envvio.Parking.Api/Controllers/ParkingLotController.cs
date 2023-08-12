@@ -8,7 +8,12 @@ namespace Envvio.Parking.Api.Controllers
     [Route("[controller]")]
     public class ParkingLotController : Controller
     {
-        private readonly DataContext _context;
+        private  readonly DataContext _context;
+
+        public ParkingLotController(DataContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
         public IActionResult GetParkingLots()

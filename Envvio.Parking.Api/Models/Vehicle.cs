@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Envvio.Parking.Api.Models
 {
@@ -9,7 +9,5 @@ namespace Envvio.Parking.Api.Models
         public int Id { get; set; }
         [Required]
         public string Plate { get; set; }
-        [Required]
-        public ParkingLot ParkingLot { get; set; }
     }
 }
