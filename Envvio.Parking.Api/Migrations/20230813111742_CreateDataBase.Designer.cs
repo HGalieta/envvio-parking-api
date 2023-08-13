@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Envvio.Parking.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230812182646_Alter models")]
-    partial class Altermodels
+    [Migration("20230813111742_CreateDataBase")]
+    partial class CreateDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,13 +40,34 @@ namespace Envvio.Parking.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ParkingLotId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Plate")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ParkingLotId");
+
                     b.ToTable("Vehicles");
+                });
+
+            modelBuilder.Entity("Envvio.Parking.Api.Models.Vehicle", b =>
+                {
+                    b.HasOne("Envvio.Parking.Api.Models.ParkingLot", "ParkingLot")
+                        .WithMany("Vehicles")
+                        .HasForeignKey("ParkingLotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParkingLot");
+                });
+
+            modelBuilder.Entity("Envvio.Parking.Api.Models.ParkingLot", b =>
+                {
+                    b.Navigation("Vehicles");
                 });
 #pragma warning restore 612, 618
         }
