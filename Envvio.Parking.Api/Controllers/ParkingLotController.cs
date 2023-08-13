@@ -1,6 +1,7 @@
 ﻿using Envvio.Parking.Api.Data;
 using Envvio.Parking.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Envvio.Parking.Api.Controllers
 {
@@ -18,7 +19,7 @@ namespace Envvio.Parking.Api.Controllers
         [HttpGet]
         public IActionResult GetParkingLots()
         {
-            List<ParkingLot> parkingLots = _context.ParkingLots.ToList();
+            List<ParkingLot> parkingLots = _context.ParkingLots.Include(x => x.Vehicles).AsNoTracking().ToList();
 
             if (parkingLots != null)
             {

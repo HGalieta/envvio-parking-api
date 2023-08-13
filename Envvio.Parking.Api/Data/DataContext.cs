@@ -8,7 +8,13 @@ namespace Envvio.Parking.Api.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) { }
+        protected override void OnModelCreating(ModelBuilder modelBuilder) 
+        {
+            modelBuilder.Entity<Vehicle>()
+                .HasOne(v => v.ParkingLot)
+                .WithMany(p => p.Vehicles)
+                .HasForeignKey(v => v.ParkingLotId);
+        }
 
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<ParkingLot> ParkingLots { get; set; }

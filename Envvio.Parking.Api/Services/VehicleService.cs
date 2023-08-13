@@ -5,33 +5,15 @@ using Microsoft.EntityFrameworkCore;
 namespace Envvio.Parking.Api.Services
 {
     public class VehicleService
-    {
-        internal double CheckPayment(Vehicle vehicle)
+    { 
+        public double CalculatePayment(Vehicle vehicle, DateTime checkoutTime)
         {
-            double baseValue = 5;
+            double baseValueForHour = 5;
+            double baseValueForHourFraction = 3;
 
-            TimeSpan period = DateTime.Now - vehicle.EntryDate;
-            double hours = period.TotalHours;
+            double hours = (checkoutTime - vehicle.EntryDate).TotalHours;
 
-            if (hours  <= 1)
-            {
-                return baseValue;
-            } else if (hours <= 2)
-            {
-                return (baseValue * 2);
-            } else if (hours <= 3)
-            {
-                return (baseValue * 3);
-            } else if (hours <= 4) 
-            {
-                return (baseValue * 4);
-            } else if(hours <= 5)
-            {
-                return (baseValue * 5);
-            } else
-            {
-                return (baseValue * 6);
-            }
+            return Math.Floor(hours) * baseValueForHour + Math.Ceiling(hours - Math.Floor(hours)) * baseValueForHourFraction;
         }
     }
 }

@@ -2,6 +2,7 @@
 using Envvio.Parking.Api.Models;
 using Envvio.Parking.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Envvio.Parking.Api.Controllers
 {
@@ -55,15 +56,26 @@ namespace Envvio.Parking.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteVehicle(int id)
         {
-            Vehicle vehicle = _context.Vehicles.FirstOrDefault(v => v.Id == id);
+            Vehicle vehicle = _context.Vehicles.Include(x => x.ParkingLot).FirstOrDefault(v => v.Id == id);
 
             if (vehicle != null)
             {
-                double amountToPay = _vehicleService.CheckPayment(vehicle);
+                DateTime checkoutTime = DateTime.Now;
+                double amountToPay = _vehicleService.CalculatePayment(vehicle, checkoutTime);
                 _context.Vehicles.Remove(vehicle);
                 _context.SaveChanges();
-                Console.WriteLine($"Valor a ser pago: R${amountToPay},00");
-                return Ok(vehicle);
+                var result = new VehicleDeleteViewModel()
+                {
+                    AmountToPay = amountToPay,
+                    LeaveDate = checkoutTime,
+                    EntryDate = vehicle.EntryDate,
+                    Plate = vehicle.Plate,
+                    Id = vehicle.Id,
+                    ParkingLotId = vehicle.ParkingLotId,
+                    Currency = vehicle.ParkingLot.Currency
+
+                };
+                return Ok(result);
             }
 
             return NotFound();

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Envvio.Parking.Api.Models
 {
@@ -17,6 +17,7 @@ namespace Envvio.Parking.Api.Models
         [Required]
         public string Plate { get; set; }
         public int ParkingLotId { get; set; }
+        [JsonIgnore]
         public ParkingLot? ParkingLot { get; set; }
         public DateTime EntryDate { get; set; }
     }
