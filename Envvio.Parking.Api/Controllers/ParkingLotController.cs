@@ -65,7 +65,7 @@ namespace Envvio.Parking.Api.Controllers
         }
 
         [HttpPatch("{id}")]
-        public IActionResult PatchParkingLots(int id, ParkingLot alteredParkingLot)
+        public IActionResult PatchParkingLot(int id, ParkingLot alteredParkingLot)
         {
             ParkingLot registeredParkingLot = _context.ParkingLots.FirstOrDefault(p => p.Id == id);
 

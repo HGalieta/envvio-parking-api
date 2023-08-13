@@ -1,10 +1,11 @@
 using Envvio.Parking.Api.Data;
+using Envvio.Parking.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddScoped<VehicleService>();
 builder.Services.AddDbContext<DataContext>(
     options =>
     {

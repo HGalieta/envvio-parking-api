@@ -9,5 +9,7 @@ namespace Envvio.Parking.Api.Models
         public int Id { get; set; }
         [Required]
         public string Plate { get; set; }
+        public int ParkingLotId { get; set; }
+        public ParkingLot? ParkingLot { get; set; }
     }
 }

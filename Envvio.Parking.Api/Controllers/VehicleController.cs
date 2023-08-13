@@ -1,5 +1,6 @@
 ﻿using Envvio.Parking.Api.Data;
 using Envvio.Parking.Api.Models;
+using Envvio.Parking.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Envvio.Parking.Api.Controllers
@@ -9,10 +10,12 @@ namespace Envvio.Parking.Api.Controllers
     public class VehicleController : Controller
     {
         private readonly DataContext _context;
+        private readonly VehicleService _vehicleService;
 
-        public VehicleController(DataContext context)
+        public VehicleController(DataContext context, VehicleService vehicleService)
         {
             _context = context;
+            _vehicleService = vehicleService;
         }
 
         [HttpGet]
@@ -44,9 +47,8 @@ namespace Envvio.Parking.Api.Controllers
         [HttpPost]
         public IActionResult PostVehicle(Vehicle vehicle)
         {
-            _context.Vehicles.Add(vehicle);
-            _context.SaveChanges();
-            return Ok();
+            _vehicleService.AddVehicle(vehicle);
+            return Ok(vehicle);
 
         }
 
