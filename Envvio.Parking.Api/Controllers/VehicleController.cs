@@ -62,7 +62,8 @@ namespace Envvio.Parking.Api.Controllers
                 double amountToPay = _vehicleService.CheckPayment(vehicle);
                 _context.Vehicles.Remove(vehicle);
                 _context.SaveChanges();
-                return Ok(vehicle, amountToPay);
+                Console.WriteLine($"Valor a ser pago: R${amountToPay},00");
+                return Ok(vehicle);
             }
 
             return NotFound();
