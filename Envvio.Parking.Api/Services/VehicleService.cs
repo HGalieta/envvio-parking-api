@@ -12,8 +12,7 @@ namespace Envvio.Parking.Api.Services
 
             TimeSpan period = DateTime.Now - vehicle.EntryDate;
             double hours = period.TotalHours;
-            Console.WriteLine(period);
-            Console.WriteLine(hours);
+
             if (hours  <= 1)
             {
                 return baseValue;
