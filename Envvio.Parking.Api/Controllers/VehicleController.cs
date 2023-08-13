@@ -10,8 +10,8 @@ namespace Envvio.Parking.Api.Controllers
     [Route("[controller]")]
     public class VehicleController : Controller
     {
-        private readonly VehicleService _vehicleService;
-        public VehicleController(VehicleService vehicleService)
+        private readonly IVehicleService _vehicleService;
+        public VehicleController(IVehicleService vehicleService)
         {
             _vehicleService = vehicleService;
         }

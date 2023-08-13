@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Envvio.Parking.Api.Services
 {
-    public class VehicleService
+    public class VehicleService : IVehicleService
     {
         private readonly DataContext _context;
 
@@ -31,7 +31,7 @@ namespace Envvio.Parking.Api.Services
 
         public VehicleDeleteViewModel RemoveVehicle(Vehicle vehicle)
         {
-            DateTime checkoutTime = DateTime.Now;
+            DateTime checkoutTime = DateTime.UtcNow;
             double amountToPay = CalculatePayment(vehicle, checkoutTime);
             _context.Vehicles.Remove(vehicle);
             _context.SaveChanges();
