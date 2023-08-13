@@ -6,21 +6,32 @@ namespace Envvio.Parking.Api.Services
 {
     public class VehicleService
     {
-        private readonly DataContext _context;
-
-        public VehicleService(DataContext context)
+        internal double CheckPayment(Vehicle vehicle)
         {
-            _context = context;
-        }
+            double baseValue = 5;
 
-        public void AddVehicle(Vehicle vehicle)
-        {
-            ParkingLot parkingLot = _context.ParkingLots.FirstOrDefault(p => p.Id == vehicle.ParkingLotId);
-            parkingLot.Vehicles.Add(vehicle);
-            _context.ParkingLots.Update(parkingLot);
-                
-            _context.Vehicles.Add(vehicle);
-            _context.SaveChanges();
+            TimeSpan period = DateTime.Now - vehicle.EntryDate;
+            double hours = period.TotalHours;
+
+            if (hours  <= 1)
+            {
+                return baseValue;
+            } else if (hours <= 2)
+            {
+                return baseValue * 2;
+            } else if (hours <= 3)
+            {
+                return baseValue * 3;
+            } else if (hours <= 4) 
+            {
+                return baseValue * 4;
+            } else if(hours <= 5)
+            {
+                return baseValue * 5;
+            } else
+            {
+                return baseValue * 6;
+            }
         }
     }
 }

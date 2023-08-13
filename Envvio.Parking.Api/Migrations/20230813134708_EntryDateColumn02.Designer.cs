@@ -3,6 +3,7 @@ using System;
 using Envvio.Parking.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Envvio.Parking.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230813134708_EntryDateColumn02")]
+    partial class EntryDateColumn02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.10");
@@ -29,7 +32,7 @@ namespace Envvio.Parking.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ParkingLots", (string)null);
+                    b.ToTable("ParkingLots");
                 });
 
             modelBuilder.Entity("Envvio.Parking.Api.Models.Vehicle", b =>
@@ -52,7 +55,7 @@ namespace Envvio.Parking.Api.Migrations
 
                     b.HasIndex("ParkingLotId");
 
-                    b.ToTable("Vehicles", (string)null);
+                    b.ToTable("Vehicles");
                 });
 
             modelBuilder.Entity("Envvio.Parking.Api.Models.Vehicle", b =>

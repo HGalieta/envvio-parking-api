@@ -46,7 +46,7 @@ namespace Envvio.Parking.Api.Controllers
         {
             _context.ParkingLots.Add(parkingLot);
             _context.SaveChanges();
-            return Ok();
+            return Ok(parkingLot);
         }
 
         [HttpDelete("{id}")]

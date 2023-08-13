@@ -11,7 +11,6 @@ namespace Envvio.Parking.Api.Controllers
     {
         private readonly DataContext _context;
         private readonly VehicleService _vehicleService;
-
         public VehicleController(DataContext context, VehicleService vehicleService)
         {
             _context = context;
@@ -47,7 +46,8 @@ namespace Envvio.Parking.Api.Controllers
         [HttpPost]
         public IActionResult PostVehicle(Vehicle vehicle)
         {
-            _vehicleService.AddVehicle(vehicle);
+            _context.Vehicles.Add(vehicle);
+            _context.SaveChanges();
             return Ok(vehicle);
 
         }
@@ -59,9 +59,10 @@ namespace Envvio.Parking.Api.Controllers
 
             if (vehicle != null)
             {
+                double amountToPay = _vehicleService.CheckPayment(vehicle);
                 _context.Vehicles.Remove(vehicle);
                 _context.SaveChanges();
-                return Ok(vehicle);
+                return Ok(vehicle, amountToPay);
             }
 
             return NotFound();
