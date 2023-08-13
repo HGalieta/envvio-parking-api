@@ -20,7 +20,7 @@ namespace Envvio.Parking.Api.Services
 
         public ParkingLot GetParkingLotById(int id)
         {
-            return _context.ParkingLots.FirstOrDefault(p => p.Id == id);
+            return _context.ParkingLots.Include(x => x.Vehicles).FirstOrDefault(p => p.Id == id);
         }
 
         public void CreateParkingLot(ParkingLot parkingLot)
@@ -38,6 +38,7 @@ namespace Envvio.Parking.Api.Services
         public void UpdateParkingLot(ParkingLot registeredParkingLot, ParkingLot alteredParkingLot)
         {
             registeredParkingLot.Name = alteredParkingLot.Name;
+            registeredParkingLot.Currency = alteredParkingLot.Currency;
             _context.SaveChanges();
         }
 
