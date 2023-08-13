@@ -10,18 +10,16 @@ namespace Envvio.Parking.Api.Controllers
     [Route("[controller]")]
     public class VehicleController : Controller
     {
-        private readonly DataContext _context;
         private readonly VehicleService _vehicleService;
-        public VehicleController(DataContext context, VehicleService vehicleService)
+        public VehicleController(VehicleService vehicleService)
         {
-            _context = context;
             _vehicleService = vehicleService;
         }
 
         [HttpGet]
         public IActionResult GetVehicles()
         {
-            List<Vehicle> vehicles = _context.Vehicles.ToList();
+            List<Vehicle> vehicles = _vehicleService.GetVehicles();
 
             if (vehicles != null)
             {
@@ -34,7 +32,7 @@ namespace Envvio.Parking.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetVehicleById(int id)
         {
-            Vehicle vehicle = _context.Vehicles.FirstOrDefault(v => v.Id == id);
+            Vehicle vehicle = _vehicleService.GetVehicleById(id);
 
             if (vehicle != null)
             {
@@ -45,51 +43,35 @@ namespace Envvio.Parking.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostVehicle(Vehicle vehicle)
+        public IActionResult CreateVehicle(Vehicle vehicle)
         {
-            _context.Vehicles.Add(vehicle);
-            _context.SaveChanges();
+            _vehicleService.CreateVehicle(vehicle);
             return Ok(vehicle);
 
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteVehicle(int id)
+        public IActionResult RemoveVehicle(int id)
         {
-            Vehicle vehicle = _context.Vehicles.Include(x => x.ParkingLot).FirstOrDefault(v => v.Id == id);
+            Vehicle vehicle = _vehicleService.GetVehicleById(id);
 
             if (vehicle != null)
             {
-                DateTime checkoutTime = DateTime.Now;
-                double amountToPay = _vehicleService.CalculatePayment(vehicle, checkoutTime);
-                _context.Vehicles.Remove(vehicle);
-                _context.SaveChanges();
-                var result = new VehicleDeleteViewModel()
-                {
-                    AmountToPay = amountToPay,
-                    LeaveDate = checkoutTime,
-                    EntryDate = vehicle.EntryDate,
-                    Plate = vehicle.Plate,
-                    Id = vehicle.Id,
-                    ParkingLotId = vehicle.ParkingLotId,
-                    Currency = vehicle.ParkingLot.Currency
-
-                };
-                return Ok(result);
+                VehicleDeleteViewModel deletedVehicle = _vehicleService.RemoveVehicle(vehicle);
+                return Ok(deletedVehicle);
             }
 
             return NotFound();
         }
 
-        [HttpPatch("{id}")]
-        public IActionResult PatchVehicle(int id, Vehicle alteredVehicle)
+        [HttpPut("{id}")]
+        public IActionResult UpdateVehicle(int id, Vehicle alteredVehicle)
         {
-            Vehicle registeredVehicle = _context.Vehicles.FirstOrDefault(v => v.Id == id);
+            Vehicle registeredVehicle = _vehicleService.GetVehicleById(id); ;
 
             if (registeredVehicle != null)
             {
-                registeredVehicle.Plate = alteredVehicle.Plate;
-                _context.SaveChanges();
+                _vehicleService.UpdateVehicle(registeredVehicle, alteredVehicle);
                 return Ok(registeredVehicle);
             }
 
