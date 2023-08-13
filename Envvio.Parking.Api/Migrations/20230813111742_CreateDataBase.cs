@@ -5,7 +5,7 @@
 namespace Envvio.Parking.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateParking : Migration
+    public partial class CreateDataBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

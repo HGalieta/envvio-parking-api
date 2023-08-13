@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Envvio.Parking.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230812180728_Create Parking")]
-    partial class CreateParking
+    [Migration("20230813134055_EntryDateColumn")]
+    partial class EntryDateColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

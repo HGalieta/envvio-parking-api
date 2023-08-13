@@ -1,6 +1,8 @@
 ﻿using Envvio.Parking.Api.Data;
 using Envvio.Parking.Api.Models;
+using Envvio.Parking.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Envvio.Parking.Api.Controllers
 {
@@ -8,17 +10,16 @@ namespace Envvio.Parking.Api.Controllers
     [Route("[controller]")]
     public class VehicleController : Controller
     {
-        private readonly DataContext _context;
-
-        public VehicleController(DataContext context)
+        private readonly IVehicleService _vehicleService;
+        public VehicleController(IVehicleService vehicleService)
         {
-            _context = context;
+            _vehicleService = vehicleService;
         }
 
         [HttpGet]
         public IActionResult GetVehicles()
         {
-            List<Vehicle> vehicles = _context.Vehicles.ToList();
+            List<Vehicle> vehicles = _vehicleService.GetVehicles();
 
             if (vehicles != null)
             {
@@ -31,7 +32,7 @@ namespace Envvio.Parking.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetVehicleById(int id)
         {
-            Vehicle vehicle = _context.Vehicles.FirstOrDefault(v => v.Id == id);
+            Vehicle vehicle = _vehicleService.GetVehicleById(id);
 
             if (vehicle != null)
             {
@@ -42,38 +43,35 @@ namespace Envvio.Parking.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostVehicle(Vehicle vehicle)
+        public IActionResult CreateVehicle(Vehicle vehicle)
         {
-            _context.Vehicles.Add(vehicle);
-            _context.SaveChanges();
-            return Ok();
+            _vehicleService.CreateVehicle(vehicle);
+            return Ok(vehicle);
 
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteVehicle(int id)
+        public IActionResult RemoveVehicle(int id)
         {
-            Vehicle vehicle = _context.Vehicles.FirstOrDefault(v => v.Id == id);
+            Vehicle vehicle = _vehicleService.GetVehicleById(id);
 
             if (vehicle != null)
             {
-                _context.Vehicles.Remove(vehicle);
-                _context.SaveChanges();
-                return Ok(vehicle);
+                VehicleDeleteViewModel deletedVehicle = _vehicleService.RemoveVehicle(vehicle);
+                return Ok(deletedVehicle);
             }
 
             return NotFound();
         }
 
-        [HttpPatch("{id}")]
-        public IActionResult PatchVehicle(int id, Vehicle alteredVehicle)
+        [HttpPut("{id}")]
+        public IActionResult UpdateVehicle(int id, Vehicle alteredVehicle)
         {
-            Vehicle registeredVehicle = _context.Vehicles.FirstOrDefault(v => v.Id == id);
+            Vehicle registeredVehicle = _vehicleService.GetVehicleById(id); ;
 
             if (registeredVehicle != null)
             {
-                registeredVehicle.Plate = alteredVehicle.Plate;
-                _context.SaveChanges();
+                _vehicleService.UpdateVehicle(registeredVehicle, alteredVehicle);
                 return Ok(registeredVehicle);
             }
 

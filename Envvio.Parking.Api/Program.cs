@@ -1,15 +1,17 @@
 using Envvio.Parking.Api.Data;
+using Envvio.Parking.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddDbContext<DataContext>(
     options =>
     {
         options.UseSqlite(builder.Configuration.GetConnectionString("ParkingConnection"));
     });
+builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<IParkingLotService, ParkingLotService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
