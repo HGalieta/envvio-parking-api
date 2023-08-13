@@ -1,7 +1,7 @@
 ﻿using Envvio.Parking.Api.Data;
 using Envvio.Parking.Api.Models;
+using Envvio.Parking.Api.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Envvio.Parking.Api.Controllers
 {
@@ -10,16 +10,17 @@ namespace Envvio.Parking.Api.Controllers
     public class ParkingLotController : Controller
     {
         private  readonly DataContext _context;
+        private readonly IParkingLotService _parkingLotService;
 
-        public ParkingLotController(DataContext context)
+        public ParkingLotController(IParkingLotService parkingLotService)
         {
-            _context = context;
+            _parkingLotService = parkingLotService;
         }
 
         [HttpGet]
         public IActionResult GetParkingLots()
         {
-            List<ParkingLot> parkingLots = _context.ParkingLots.Include(x => x.Vehicles).AsNoTracking().ToList();
+            List<ParkingLot> parkingLots = _parkingLotService.GetParkingLots();
 
             if (parkingLots != null)
             {
@@ -32,7 +33,7 @@ namespace Envvio.Parking.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetParkingLotById(int id)
         {
-            ParkingLot parkingLot = _context.ParkingLots.FirstOrDefault(p => p.Id == id);
+            ParkingLot parkingLot = _parkingLotService.GetParkingLotById(id);
 
             if (parkingLot != null)
             {
@@ -43,37 +44,34 @@ namespace Envvio.Parking.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostParkingLot(ParkingLot parkingLot)
+        public IActionResult CreateParkingLot(ParkingLot parkingLot)
         {
-            _context.ParkingLots.Add(parkingLot);
-            _context.SaveChanges();
+            _parkingLotService.CreateParkingLot(parkingLot);
             return Ok(parkingLot);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteParkingLot(int id)
+        public IActionResult RemoveParkingLot(int id)
         {
-            ParkingLot parkingLot = _context.ParkingLots.FirstOrDefault(p => p.Id == id);
+            ParkingLot parkingLot = _parkingLotService.GetParkingLotById(id);
 
             if (parkingLot != null)
             {
-                _context.ParkingLots.Remove(parkingLot);
-                _context.SaveChanges();
+                _parkingLotService.RemoveParkingLot(parkingLot);
                 return Ok(parkingLot);
             }
 
             return NotFound();
         }
 
-        [HttpPatch("{id}")]
-        public IActionResult PatchParkingLot(int id, ParkingLot alteredParkingLot)
+        [HttpPut("{id}")]
+        public IActionResult UpdateParkingLot(int id, ParkingLot alteredParkingLot)
         {
-            ParkingLot registeredParkingLot = _context.ParkingLots.FirstOrDefault(p => p.Id == id);
+            ParkingLot registeredParkingLot = _parkingLotService.GetParkingLotById(id);
 
             if (registeredParkingLot != null)
             {
-                registeredParkingLot.Name = alteredParkingLot.Name;
-                _context.SaveChanges();
+                _parkingLotService.UpdateParkingLot(registeredParkingLot, alteredParkingLot);
                 return Ok(registeredParkingLot);
             }
 

@@ -33,6 +33,7 @@ namespace Envvio.Parking.Api.Services
         {
             DateTime checkoutTime = DateTime.UtcNow;
             double amountToPay = CalculatePayment(vehicle, checkoutTime);
+            AddPayment(vehicle, amountToPay);
             _context.Vehicles.Remove(vehicle);
             _context.SaveChanges();
             return new VehicleDeleteViewModel()
@@ -64,6 +65,13 @@ namespace Envvio.Parking.Api.Services
             double hours = (checkoutTime - vehicle.EntryDate).TotalHours;
 
             return Math.Floor(hours) * baseValueForHour + Math.Ceiling(hours - Math.Floor(hours)) * baseValueForHourFraction;
+        }
+
+        public void AddPayment(Vehicle vehicle, double payment)
+        {
+            ParkingLot parkingLot = _context.ParkingLots.FirstOrDefault(p => p.Id == vehicle.ParkingLotId);
+            parkingLot.Earnings += payment;
+            _context.SaveChanges();
         }
     }
 }

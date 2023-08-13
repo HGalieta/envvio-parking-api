@@ -18,6 +18,7 @@ namespace Envvio.Parking.Api.Models
         public string Name { get; set; }
         public ICollection<Vehicle> Vehicles { get; set; }
         public string Currency { get; set; }
+        public double Earnings { get; set; }
     }
 
 }

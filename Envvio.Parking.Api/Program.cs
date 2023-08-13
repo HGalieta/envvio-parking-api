@@ -11,6 +11,7 @@ builder.Services.AddDbContext<DataContext>(
         options.UseSqlite(builder.Configuration.GetConnectionString("ParkingConnection"));
     });
 builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<IParkingLotService, ParkingLotService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
